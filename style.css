@@ -1,0 +1,45 @@
+body
+{
+    font-family: Verdana;
+}
+
+table
+{
+    width: 100%;
+    page-break-inside:avoid;
+}
+
+div tr td
+{
+    page-break-inside:avoid;
+    font-size: 18px;
+}
+
+.when
+{
+    width:25%;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.what
+{
+    font-weight: bold;    
+    padding-top: 5px;
+}
+
+.where
+{
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+.why
+{
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
