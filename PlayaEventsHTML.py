@@ -6,6 +6,9 @@ import codecs
 import pprint
 import time,datetime
 import latexcodec
+import shutil
+import os
+
 
 #req = urllib2.urlopen('http://playaevents.burningman.com/api/0.2/2013/event/')
 req = codecs.open('events.json', encoding='utf-8')
@@ -22,6 +25,7 @@ i = 0;
 for e in json_data:
     for o in e['occurrence_set']:
         event = {}
+        event['id'] = e['id']
         t = time.strptime(o['start_time'], time_format)
         event['start_time'] = datetime.datetime(*t[:6])
         t = time.strptime(o['end_time'], time_format)
@@ -44,6 +48,14 @@ prev_day = 0
 prev_all_day = None
 out = None
 
+try:
+    os.mkdir('output')
+except OSError as e:
+    pass
+
+shutil.copyfile('playa_events.tex', 'output/playa_events.tex')
+shutil.copyfile('helvetica.sty', 'output/helvetica.sty')
+    
 # index = codecs.open('index.html', encoding='utf-8', mode='w')
 # index.write('<html><body><ul>')
 
@@ -55,7 +67,7 @@ for e in events:
             out.close()
 
         # Create a new file
-        out = codecs.open(e['start_time'].strftime("%m-%d-%A") + '.tex', encoding='utf-8', mode='w')
+        out = codecs.open("output/" + e['start_time'].strftime("%m-%d-%A") + '.tex', encoding='utf-8', mode='w')
         out.write('\\input{playa_events.tex}\n')
         out.write('\\begin{document}')
         out.write('\\tiny')
@@ -66,8 +78,11 @@ for e in events:
     what =  e['title'].encode("latex", errors='replace')
     who =   e['hosted_by_camp']['name'].encode("latex", errors='replace') if 'hosted_by_camp' in e else '~'
     where = e['other_location'].encode("latex", errors='replace') 
-    why =   e['description'].encode("latex", errors='replace')
+    why =   e['print_description'].encode("latex", errors='replace')
 
+    if e['id'] == 11079:
+        pp.pprint(e)
+        
     out.write(r"""
 \begin{tabular}{ p{1in} p{2.2in} }
     \textbf{%s} & \textbf{%s} \\
