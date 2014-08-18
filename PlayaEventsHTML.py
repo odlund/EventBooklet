@@ -5,9 +5,9 @@ import json
 import codecs
 import pprint
 import time,datetime
-req = urllib2.urlopen('http://playaevents.burningman.com/api/0.2/2013/event/')
+#req = urllib2.urlopen('http://playaevents.burningman.com/api/0.2/2014/event/')
 
-# req = codecs.open('events.json', encoding='utf-8')
+req = codecs.open('events.json', encoding='utf-8')
 data = req.read()
 json_data = json.loads(data)
 
@@ -31,7 +31,9 @@ for e in json_data:
         if 'hosted_by_camp' in e:
             event['hosted_by_camp'] = e['hosted_by_camp']
         event['other_location'] = e['other_location']
+        event['label'] = e['event_type']['label']
         events.append(event)
+
 
 # pp.pprint(events)
 events = sorted(events, key=lambda event: event['all_day'], reverse=True)
@@ -85,7 +87,9 @@ for e in events:
     out.write('    <td class="where">')
     if 'hosted_by_camp' in e:
         out.write(e['hosted_by_camp']['name'] + '<br/>')
-    out.write(e['other_location'])
+    out.write(e['other_location'] +'<br/>')
+    if e['label'] != 'None':
+        out.write(e['label'] + '<br/>')
     out.write('</td>\n')
     
     out.write('    <td class="why">' + e['description'] + '</td>\n')
