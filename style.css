@@ -42,4 +42,5 @@ div tr td
     border-bottom: 1px solid black;
     padding-bottom: 10px;
     padding-right: 10px;
+    vertical-align: top;
 }
